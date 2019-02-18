@@ -28,7 +28,9 @@ public class MainController {
 
     @GetMapping("/cities")
     public String latestAirQualityForCity(Model model) {
-        model.addAttribute("request", new CityAirQualityRequest());
+        final CityAirQualityRequest request =  new CityAirQualityRequest();
+        request.setLimit(100);
+        model.addAttribute("request", request);
         return "index";
     }
 
@@ -42,6 +44,8 @@ public class MainController {
     private Map<String, String> extractQueryParamsFromRequest(CityAirQualityRequest request) {
         final Map<String, String> queryParameters = new HashMap<>();
         queryParameters.put("city", (StringUtils.isEmpty(request.getCityName()) ? "" : request.getCityName()));
+        queryParameters.put("sort", request.getSort());
+        queryParameters.put("limit", String.valueOf(request.getLimit()));
         return queryParameters;
     }
 }

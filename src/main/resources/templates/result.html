@@ -8,10 +8,9 @@
 </head>
 <body>
 <div class="container">
-    <h1>Results</h1>
-    <a href="/cities">Back to City Selection</a>
     <th:block th:if="${!results.isEmpty()}">
-        <h2 th:text="'City: ' + ${results.get(0).city}"></h2>
+        <h1 th:text="'Latest Air Quality Measurements for ' + ${results.get(0).city} + ', ' + ${results.get(0).country}"></h1>
+        <a href="/cities">Back to City Selection</a>
         <hr/>
         <th:block th:each="result : ${results}">
             <h2 th:text="'Location: ' + ${result.location}"></h2>
@@ -37,9 +36,9 @@
     </th:block>
 
     <th:block th:if="${results.isEmpty()}">
+        <h1>Results </h1>
         <p>No results found for entered city, please go back and try again</p>
     </th:block>
-    </table>
     <a href="/cities">Back to City Selection</a>
 </div>
 </body>

@@ -8,11 +8,21 @@
 </head>
 <body>
 <div class="container">
-    <h1>Get Air Quality Measurements for City</h1>
+    <h1>Get Latest Air Quality Measurements for City</h1>
     <form action="#" th:action="@{/result}" th:object="${request}" method="post">
         <div class="form-group">
-            <label for="cityLabel">City: </label>
-                <input id="cityLabel" type="text" th:field="*{cityName}" placeholder="Enter a City Name" />
+            <label for="cityInput">City: </label>
+            <input id="cityInput" type="text" th:field="*{cityName}" placeholder="Enter a City Name" />
+            <hr />
+            <h3>Search Configuration</h3>
+
+            <label for="sortSelect">Sort:</label>
+            <select class="custom-select" id="sortSelect" th:field="*{sort}" style="width: 200px;">
+                <option selected th:value="'asc'">Ascending</option>
+                <option th:value="'desc'">Descending</option>
+            </select>
+            <label for="limitInput">Limit: </label>
+            <input id="limitInput" type="number" th:field="*{limit}" th:default="100" min="1"/>
         </div>
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
