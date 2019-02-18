@@ -14,7 +14,7 @@ public class CityAirQualityRequest {
     }
 
     public CityAirQualityRequest(String cityName, String sort, boolean orderByLocation, int limit) {
-        this.cityName = cityName;
+        this.cityName = StringUtils.capitalize(cityName.toLowerCase()).trim();
         this.sort = sort;
         this.orderByLocation = orderByLocation;
         this.limit = limit;
@@ -25,7 +25,7 @@ public class CityAirQualityRequest {
     }
 
     public void setCityName(String cityName) {
-        this.cityName = StringUtils.capitalize(cityName.toLowerCase());
+        this.cityName = StringUtils.capitalize(cityName.toLowerCase()).trim();
     }
 
     public String getSort() {
