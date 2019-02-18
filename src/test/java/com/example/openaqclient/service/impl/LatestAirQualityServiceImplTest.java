@@ -1,12 +1,10 @@
 package com.example.openaqclient.service.impl;
 
-import com.example.openaqclient.controller.PathParameter;
 import com.example.openaqclient.exception.APIResponseException;
 import com.example.openaqclient.service.helper.json.JsonConverter;
 import com.example.openaqclient.service.helper.rest.RestClient;
 import com.example.openaqclient.service.helper.rest.response.RestResponseEntity;
 import com.example.openaqclient.service.result.*;
-import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,9 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -39,18 +35,20 @@ public class LatestAirQualityServiceImplTest {
     @Test
     public void whenCallToGetLatestAirQualityForCityWithParametersSuccessful_returnsResults() throws APIResponseException {
         final ResultWrapper<Location> expected = generateLocationResults();
+        final Map<String, String> queryParameters = new HashMap<>();
         final String path = "/latest";
-        final PathParameter cityParameter = new PathParameter("city", "London");
-        final String fullPath = path + "?" + cityParameter.toString();
+        final String cityName = "London";
+        final String fullPath = path + "?" + "city=" + cityName;
         final String body = "{}";
-        ReflectionTestUtils.setField(instance, "latestPath", path);
+        queryParameters.put("city", cityName);
 
+        ReflectionTestUtils.setField(instance, "latestPath", path);
         when(restClient.performGetRequestForPath(fullPath)).thenReturn(restResponseEntity);
         when(restResponseEntity.getHttpStatusCodeValue()).thenReturn(200);
         when(restResponseEntity.getBody()).thenReturn(body);
         doReturn(expected).when(jsonConverter).convertJsonStringToResultWrapperOfType(body, Location.class);
 
-        final ResultWrapper<Location> actual = instance.getLatestAirQualityForCityWithParameters(cityParameter, Lists.emptyList());
+        final ResultWrapper<Location> actual = instance.getLatestAirQualityForCityWithParameters(queryParameters);
         assertThat(actual.getResults().get(0)).isEqualTo(expected.getResults().get(0));
         verify(restClient).performGetRequestForPath(fullPath);
         verify(jsonConverter).convertJsonStringToResultWrapperOfType(body, Location.class);
@@ -58,14 +56,16 @@ public class LatestAirQualityServiceImplTest {
 
     @Test(expected = APIResponseException.class)
     public void whenCallToGetLatestAirQualityForCityUnsuccessful_throwsException() throws APIResponseException {
+        final Map<String, String> queryParameters = new HashMap<>();
         final String path = "/latest";
-        final PathParameter cityParameter = new PathParameter("city", "London");
-        final String fullPath = path + "?" + cityParameter.toString();
-        ReflectionTestUtils.setField(instance, "latestPath", path);
+        final String cityName = "London";
+        final String fullPath = path + "?" + "city=" + cityName;
+        queryParameters.put("city", cityName);
 
+        ReflectionTestUtils.setField(instance, "latestPath", path);
         when(restClient.performGetRequestForPath(fullPath)).thenReturn(restResponseEntity);
         when(restResponseEntity.getHttpStatusCodeValue()).thenReturn(400);
-        instance.getLatestAirQualityForCityWithParameters(cityParameter, Lists.emptyList());
+        instance.getLatestAirQualityForCityWithParameters(queryParameters);
         verify(restClient).performGetRequestForPath(fullPath);
         verifyZeroInteractions(jsonConverter);
     }

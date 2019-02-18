@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Result</h1>
+<a href="/cities">Back to City Selection</a>
+<th:block th:if="${!results.isEmpty()}">
+    <h2 th:text="${results.get(0).city}"></h2>
+    <th:block th:each="result : ${results}">
+        <h2 th:text="${result.location}"></h2>
+        <h3>Measurements:</h3>
+        <th:block th:each="measurement : ${result.getMeasurements()}">
+            <p th:text="${measurement.value + ' ' + measurement.unit + ' Last Updated: ' + measurement.lastUpdated}"></p>
+        </th:block>
+    </th:block>
+</th:block>
+
+<th:block th:if="${results.isEmpty()}">
+    <p>No results found for entered city, please go back and try again</p>
+</th:block>
+</table>
+<a href="/cities">Back to City Selection</a>
+</body>
+</html>

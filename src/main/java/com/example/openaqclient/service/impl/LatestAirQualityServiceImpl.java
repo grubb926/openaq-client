@@ -1,6 +1,5 @@
 package com.example.openaqclient.service.impl;
 
-import com.example.openaqclient.controller.PathParameter;
 import com.example.openaqclient.exception.APIResponseException;
 import com.example.openaqclient.service.LatestAirQualityService;
 import com.example.openaqclient.service.helper.json.JsonConverter;
@@ -11,8 +10,11 @@ import com.example.openaqclient.service.result.ResultWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import java.util.Map;
 
 @Service
 public class LatestAirQualityServiceImpl implements LatestAirQualityService {
@@ -30,21 +32,20 @@ public class LatestAirQualityServiceImpl implements LatestAirQualityService {
     }
 
     @Override
-    public ResultWrapper<Location> getLatestAirQualityForCityWithParameters(PathParameter cityParameter, List<PathParameter> pathParameters) throws APIResponseException {
-        final RestResponseEntity restResponseEntity = restClient.performGetRequestForPath(buildPath(cityParameter, pathParameters));
+    public ResultWrapper<Location> getLatestAirQualityForCityWithParameters(Map<String, String> queryParameters) throws APIResponseException {
+        final RestResponseEntity restResponseEntity = restClient.performGetRequestForPath(buildPath(queryParameters));
         if (restResponseEntity.getHttpStatusCodeValue() != 200) {
             throw new APIResponseException();
         }
         return jsonConverter.convertJsonStringToResultWrapperOfType(restResponseEntity.getBody(), Location.class);
     }
 
-    private String buildPath(PathParameter cityParameter, List<PathParameter> pathParameters) {
-        StringBuilder sb = new StringBuilder(latestPath + "?" + cityParameter.toString());
-
-        for(PathParameter pathParameter : pathParameters) {
-            sb.append("&").append(pathParameter.toString());
+    private String buildPath(Map<String, String> queryParameters) {
+        final MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+        for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
+            multiValueMap.add(entry.getKey(), entry.getValue());
         }
-
-        return sb.toString();
+        final UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(latestPath).queryParams(multiValueMap);
+        return uriComponentsBuilder.build().encode().toUriString();
     }
 }
