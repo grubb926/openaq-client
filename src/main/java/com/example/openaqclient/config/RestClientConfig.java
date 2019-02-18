@@ -14,7 +14,6 @@ public class RestClientConfig {
     @Value("${openaq.version}")
     private String version;
 
-
     @Bean
     public RestTemplateBuilder restTemplateBuilder() {
         return new RestTemplateBuilder().rootUri(hostname + version);

@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <h1>Get Latest Air Quality Measurements for City</h1>
-    <form action="#" th:action="@{/result}" th:object="${request}" method="post">
+    <form action="#" th:action="@{/cities/result}" th:object="${request}" method="post">
         <div class="form-group">
             <label for="cityInput">City: </label>
             <input id="cityInput" type="text" th:field="*{cityName}" placeholder="Enter a City Name" />

@@ -14,7 +14,7 @@ public class CityAirQualityRequest {
     }
 
     public CityAirQualityRequest(String cityName, String sort, boolean orderByLocation, int limit) {
-        this.cityName = StringUtils.capitalize(cityName.toLowerCase()).trim();
+        this.cityName = trimAndCorrectCaseString(cityName);
         this.sort = sort;
         this.orderByLocation = orderByLocation;
         this.limit = limit;
@@ -25,7 +25,7 @@ public class CityAirQualityRequest {
     }
 
     public void setCityName(String cityName) {
-        this.cityName = StringUtils.capitalize(cityName.toLowerCase()).trim();
+        this.cityName = trimAndCorrectCaseString(cityName);
     }
 
     public String getSort() {
@@ -50,5 +50,9 @@ public class CityAirQualityRequest {
 
     public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    private String trimAndCorrectCaseString(String s) {
+       return StringUtils.capitalize(s.toLowerCase()).trim();
     }
 }

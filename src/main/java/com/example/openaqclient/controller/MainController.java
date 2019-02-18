@@ -6,18 +6,30 @@ import com.example.openaqclient.service.LatestAirQualityService;
 import com.example.openaqclient.service.result.Location;
 import com.example.openaqclient.service.result.ResultWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/cities")
 public class MainController {
+
+    @Value("${openaq.query.param.city}")
+    private String cityKey;
+
+    @Value("${openaq.query.param.sort}")
+    private String sortKey;
+
+    @Value("${openaq.query.param.limit}")
+    private String limitKey;
 
     private LatestAirQualityService latestAirQualityService;
 
@@ -26,7 +38,7 @@ public class MainController {
         this.latestAirQualityService = latestAirQualityService;
     }
 
-    @GetMapping("/cities")
+    @GetMapping
     public String latestAirQualityForCity(Model model) {
         final CityAirQualityRequest request =  new CityAirQualityRequest();
         request.setLimit(100);
@@ -43,9 +55,9 @@ public class MainController {
 
     private Map<String, String> extractQueryParamsFromRequest(CityAirQualityRequest request) {
         final Map<String, String> queryParameters = new HashMap<>();
-        queryParameters.put("city", (StringUtils.isEmpty(request.getCityName()) ? "" : request.getCityName()));
-        queryParameters.put("sort", request.getSort());
-        queryParameters.put("limit", String.valueOf(request.getLimit()));
+        queryParameters.put(cityKey, (StringUtils.isEmpty(request.getCityName()) ? "" : request.getCityName()));
+        queryParameters.put(sortKey, request.getSort());
+        queryParameters.put(limitKey, String.valueOf(request.getLimit()));
         return queryParameters;
     }
 }
