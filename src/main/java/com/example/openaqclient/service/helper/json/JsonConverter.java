@@ -6,5 +6,7 @@ import java.lang.reflect.Type;
 
 public interface JsonConverter {
 
+    <T> T convertJsonStringToType(String json, Type type);
+
     <T> ResultWrapper<T> convertJsonStringToResultWrapperOfType(String json, Type type);
 }

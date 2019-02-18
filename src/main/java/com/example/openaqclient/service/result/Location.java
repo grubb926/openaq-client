@@ -9,15 +9,15 @@ public class Location {
     private String country;
     private double distance;
     private List<Measurement> measurements;
-    private Coordinate coordinate;
+    private Coordinates coordinates;
 
-    public Location(String location, String city, String country, double distance, List<Measurement> measurements, Coordinate coordinate) {
+    public Location(String location, String city, String country, double distance, List<Measurement> measurements, Coordinates coordinates) {
         this.location = location;
         this.city = city;
         this.country = country;
         this.distance = distance;
         this.measurements = measurements;
-        this.coordinate = coordinate;
+        this.coordinates = coordinates;
     }
 
     public String getLocation() {
@@ -40,7 +40,7 @@ public class Location {
         return measurements;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 }

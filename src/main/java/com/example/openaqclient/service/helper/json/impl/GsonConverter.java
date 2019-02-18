@@ -12,9 +12,19 @@ import java.lang.reflect.Type;
 @Component
 public class GsonConverter implements JsonConverter {
 
+    private Gson gson;
+
+    public GsonConverter() {
+        gson = new GsonBuilder().create();
+    }
+
+    @Override
+    public <T> T convertJsonStringToType(String json, Type type) {
+        return gson.fromJson(json, type);
+    }
+
     @Override
     public <T> ResultWrapper<T> convertJsonStringToResultWrapperOfType(String json, Type type) {
-        final Gson gson = new GsonBuilder().create();
         return gson.fromJson(json, TypeToken.getParameterized(ResultWrapper.class, type).getType());
     }
 }

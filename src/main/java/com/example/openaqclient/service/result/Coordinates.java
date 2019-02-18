@@ -1,11 +1,11 @@
 package com.example.openaqclient.service.result;
 
-public class Coordinate {
+public class Coordinates {
 
     private double latitude;
     private double longitude;
 
-    public Coordinate(double latitude, double longitude) {
+    public Coordinates(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
