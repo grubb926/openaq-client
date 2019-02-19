@@ -1,8 +1,6 @@
 package com.example.openaqclient.controller.form;
 
 
-import org.thymeleaf.util.StringUtils;
-
 public class CityAirQualityRequest {
 
     private String cityName;
@@ -14,7 +12,7 @@ public class CityAirQualityRequest {
     }
 
     public CityAirQualityRequest(String cityName, String sort, boolean orderByLocation, int limit) {
-        this.cityName = trimAndCorrectCaseString(cityName);
+        this.cityName = cityName;
         this.sort = sort;
         this.orderByLocation = orderByLocation;
         this.limit = limit;
@@ -25,7 +23,7 @@ public class CityAirQualityRequest {
     }
 
     public void setCityName(String cityName) {
-        this.cityName = trimAndCorrectCaseString(cityName);
+        this.cityName = cityName;
     }
 
     public String getSort() {
@@ -50,9 +48,5 @@ public class CityAirQualityRequest {
 
     public void setLimit(int limit) {
         this.limit = limit;
-    }
-
-    private String trimAndCorrectCaseString(String s) {
-       return StringUtils.capitalize(s.toLowerCase()).trim();
     }
 }

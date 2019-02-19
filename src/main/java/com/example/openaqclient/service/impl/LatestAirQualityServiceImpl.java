@@ -46,6 +46,6 @@ public class LatestAirQualityServiceImpl implements LatestAirQualityService {
             multiValueMap.add(entry.getKey(), entry.getValue());
         }
         final UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(latestPath).queryParams(multiValueMap);
-        return uriComponentsBuilder.build().encode().toUriString();
+        return uriComponentsBuilder.build().toUriString();
     }
 }
